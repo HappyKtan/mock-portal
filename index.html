@@ -37,6 +37,10 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        input[disabled] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
         button {
             width: 100%;
             padding: 10px;
@@ -73,9 +77,9 @@
     <!-- Registration Form -->
     <div class="form-container" id="registration-section" style="display:none;">
         <h1>Register Client</h1>
-        <input type="text" id="clientPIN" placeholder="Client PIN" />
-        <input type="text" id="lastName" placeholder="Last Name" />
-        <input type="text" id="firstName" placeholder="First Name" />
+        <input type="text" id="clientPIN" placeholder="Client PIN" oninput="toggleNameFields()" />
+        <input type="text" id="lastName" placeholder="Last Name" disabled />
+        <input type="text" id="firstName" placeholder="First Name" disabled />
         <select id="clientType">
             <option value="">Select Client Type</option>
             <option value="Member">Member</option>
@@ -110,6 +114,20 @@
             }
         }
 
+        function toggleNameFields() {
+            const clientPIN = document.getElementById('clientPIN').value;
+            const lastName = document.getElementById('lastName');
+            const firstName = document.getElementById('firstName');
+
+            if (clientPIN.trim() !== '') {
+                lastName.disabled = true;
+                firstName.disabled = true;
+            } else {
+                lastName.disabled = false;
+                firstName.disabled = false;
+            }
+        }
+
         function registerClient() {
             const clientPIN = document.getElementById('clientPIN').value;
             const lastName = document.getElementById('lastName').value;
@@ -117,13 +135,13 @@
             const clientType = document.getElementById('clientType').value;
             const message = document.getElementById('registration-message');
 
-            if (clientPIN && lastName && firstName && clientType) {
+            if (clientPIN && clientType) {
                 message.textContent = '';
                 document.getElementById('registration-section').style.display = 'none';
                 document.getElementById('confirmation-section').style.display = 'block';
-                document.getElementById('confirmation-details').textContent = `Do you want to register ${firstName} ${lastName} (${clientType}) with PIN ${clientPIN}?`;
+                document.getElementById('confirmation-details').textContent = `Do you want to register the client with PIN ${clientPIN}?`;
             } else {
-                message.textContent = 'Please fill in all fields!';
+                message.textContent = 'Please fill in all required fields!';
                 message.style.color = 'red';
             }
         }
@@ -150,6 +168,7 @@
             document.getElementById('lastName').value = '';
             document.getElementById('firstName').value = '';
             document.getElementById('clientType').value = '';
+            toggleNameFields();
         }
     </script>
 </body>
