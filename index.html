@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock PhilHealth Konsulta Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-container, .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        .facility {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Form -->
+    <div class="login-container" id="login-section">
+        <h1>Login</h1>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <button onclick="login()">Log In</button>
+        <div class="message" id="login-message"></div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-container" id="registration-section" style="display:none;">
+        <h1>Register Client</h1>
+        <input type="text" id="clientPIN" placeholder="Client PIN" />
+        <input type="text" id="lastName" placeholder="Last Name" />
+        <input type="text" id="firstName" placeholder="First Name" />
+        <select id="clientType">
+            <option value="">Select Client Type</option>
+            <option value="Member">Member</option>
+            <option value="Dependent">Dependent</option>
+        </select>
+        <button onclick="registerClient()">Submit</button>
+        <div class="message" id="registration-message"></div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div class="form-container" id="confirmation-section" style="display:none;">
+        <h1>Confirm Registration</h1>
+        <p id="confirmation-details"></p>
+        <button onclick="confirmRegistration()">Confirm</button>
+        <button onclick="cancelRegistration()">Cancel</button>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
+            if (username === 'admin' && password === 'password') {
+                message.textContent = 'Login successful!';
+                message.style.color = 'green';
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('registration-section').style.display = 'block';
+            } else {
+                message.textContent = 'Invalid credentials!';
+                message.style.color = 'red';
+            }
+        }
+
+        function registerClient() {
+            const clientPIN = document.getElementById('clientPIN').value;
+            const lastName = document.getElementById('lastName').value;
+            const firstName = document.getElementById('firstName').value;
+            const clientType = document.getElementById('clientType').value;
+            const message = document.getElementById('registration-message');
+
+            if (clientPIN && lastName && firstName && clientType) {
+                message.textContent = '';
+                document.getElementById('registration-section').style.display = 'none';
+                document.getElementById('confirmation-section').style.display = 'block';
+                document.getElementById('confirmation-details').textContent = `Do you want to register ${firstName} ${lastName} (${clientType}) with PIN ${clientPIN}?`;
+            } else {
+                message.textContent = 'Please fill in all fields!';
+                message.style.color = 'red';
+            }
+        }
+
+        function confirmRegistration() {
+            alert('Client registered successfully!');
+            resetForms();
+        }
+
+        function cancelRegistration() {
+            document.getElementById('confirmation-section').style.display = 'none';
+            document.getElementById('registration-section').style.display = 'block';
+        }
+
+        function resetForms() {
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('registration-section').style.display = 'none';
+            document.getElementById('confirmation-section').style.display = 'none';
+            document.getElementById('login-message').textContent = '';
+            document.getElementById('registration-message').textContent = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('clientPIN').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('firstName').value = '';
+            document.getElementById('clientType').value = '';
+        }
+    </script>
+</body>
+</html>
